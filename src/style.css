@@ -1,0 +1,251 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+#app {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Chia layout thành 2 cột */
+  gap: 30px;
+  max-width: 1200px;
+  margin: auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.control-panel {
+  /* Cột bên trái cho input và staging */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.history-panel {
+  /* Cột bên phải cho lịch sử */
+  border-left: 1px solid #ccc;
+  padding-left: 30px;
+}
+
+h2,
+h3 {
+  color: #2c3e50;
+  border-bottom: 2px solid #42b983;
+  padding-bottom: 5px;
+  margin-top: 0;
+}
+
+/* --- Styling cho các component --- */
+
+/* ExpenseForm */
+.expense-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.expense-form label {
+  font-weight: bold;
+}
+.expense-form input,
+.expense-form button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.expense-form button {
+  background-color: #42b983;
+  color: white;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+.expense-form button:hover {
+  background-color: #36a374;
+}
+
+/* StagingArea */
+.staging-area ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 250px; /* Giới hạn chiều cao */
+  overflow-y: auto; /* Thêm thanh cuộn nếu cần */
+  border: 1px dashed #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+.staging-area li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 5px;
+  border-bottom: 1px solid #eee;
+}
+.staging-area li:last-child {
+  border-bottom: none;
+}
+.staging-area .remove-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8em;
+}
+.staging-area .remove-btn:hover {
+  background-color: #c0392b;
+}
+.staging-area .empty-stage {
+  color: #888;
+  text-align: center;
+  padding: 20px;
+}
+
+/* CommitBox */
+.commit-box textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-height: 60px;
+  box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+  margin-bottom: 10px;
+}
+.commit-box .commit-button {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+.commit-box .commit-button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+.commit-box .commit-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+/* CommitHistory */
+.commit-history {
+  padding: 10px 15px;
+}
+
+.commit-history ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.commit-history .commit-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding: 15px;
+  background-color: #ecf0f1;
+  position: relative; /* Cho đường kẻ */
+  padding-left: 30px; /* Tạo khoảng trống cho đường kẻ và chấm */
+}
+
+/* Mô phỏng đường log của git */
+.commit-history .commit-item::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #bdc3c7;
+}
+.commit-history ul li:first-child .commit-item::before {
+  top: 25px; /* Bắt đầu đường kẻ từ chấm */
+}
+.commit-history ul li:last-child .commit-item::before {
+  bottom: calc(100% - 25px); /* Kết thúc đường kẻ tại chấm */
+}
+.commit-history .commit-dot {
+  content: "";
+  position: absolute;
+  left: 7px; /* (12px - (10px / 2)) */
+  top: 20px; /* Canh giữa theo dòng đầu tiên */
+  width: 10px;
+  height: 10px;
+  background-color: #3498db;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.commit-history .commit-header {
+  margin-bottom: 10px;
+}
+.commit-history .commit-message {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #2980b9;
+}
+.commit-history .commit-time {
+  font-size: 0.85em;
+  color: #7f8c8d;
+  margin-left: 10px;
+}
+.commit-history .commit-id {
+  font-family: monospace;
+  font-size: 0.8em;
+  color: #95a5a6;
+  display: block; /* Hiển thị trên dòng riêng */
+  margin-top: 5px;
+}
+
+.commit-history .commit-transactions ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin-top: 10px;
+}
+.commit-history .commit-transactions li {
+  margin-bottom: 5px;
+  font-size: 0.95em;
+}
+
+.currency {
+  font-weight: bold;
+  color: #c0392b; /* Màu đỏ cho tiền */
+}
+
+.total-commit-amount {
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: right;
+}
+
+@media (max-width: 800px) {
+  #app {
+    /* Chuyển layout thành 1 cột duy nhất */
+    grid-template-columns: 1fr;
+    padding: 15px; /* Giảm padding trên màn hình nhỏ */
+    gap: 20px; /* Giảm khoảng cách giữa các panel */
+  }
+
+  .history-panel {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  #app {
+      padding: 10px;
+  }
+   h2, h3 {
+      font-size: 1.2em; /* Giảm cỡ chữ tiêu đề một chút */
+   }
+}
